@@ -24,8 +24,10 @@ class Tray(QtGui.QSystemTrayIcon):
   def pakeisk(self, veiksmas):
     variantas = veiksmas.text()
     if variantas != "Exit":
-      subprocess.call(["setxkbmap",  "%s" % variantas])
-      self.showMessage("Pakeista", variantas, msecs=2000)
+      if not subprocess.call(["setxkbmap",  "%s" % variantas]):
+	self.showMessage("Pakeista", variantas, msecs=2000)
+      else:
+	tray.showMessage("Nepakeista", variantas+"\n\n\n", msecs=2000)
       self.setToolTip(variantas)
 
 class KeyBinder:
@@ -38,8 +40,10 @@ class KeyBinder:
     if self.skaicius >= len(self.variantai):
       self.skaicius = 0
     variantas = self.variantai[self.skaicius]
-    subprocess.call(["setxkbmap",  "%s" % variantas])
-    tray.showMessage("Pakeista", variantas+"\n\n\n", msecs=2000)
+    if not subprocess.call(["setxkbmap",  "%s" % variantas]):
+      tray.showMessage("Pakeista", variantas+"\n\n\n", msecs=2000)
+    else:
+      tray.showMessage("Nepakeista", variantas+"\n\n\n", msecs=2000)
     tray.setToolTip(variantas)
 
 
