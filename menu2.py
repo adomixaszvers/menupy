@@ -4,6 +4,8 @@ import sys, subprocess
 import keybinder
 import threading
 
+pakeitimo_komanda = "setxkbmap"
+
 
 class Tray(QtGui.QSystemTrayIcon):
   def __init__(self, variantai, parent=None):
@@ -24,7 +26,7 @@ class Tray(QtGui.QSystemTrayIcon):
   def pakeisk(self, veiksmas):
     variantas = veiksmas.text()
     if variantas != "Exit":
-      if not subprocess.call(["setxkbmap",  "%s" % variantas]):
+      if not subprocess.call([pakeitimo_komanda,  "%s" % variantas]):
 	self.showMessage("Pakeista", variantas, msecs=2000)
       else:
 	tray.showMessage("Nepakeista", variantas+"\n\n\n", msecs=2000)
@@ -40,7 +42,7 @@ class KeyBinder:
     if self.skaicius >= len(self.variantai):
       self.skaicius = 0
     variantas = self.variantai[self.skaicius]
-    if not subprocess.call(["setxkbmap",  "%s" % variantas]):
+    if not subprocess.call([pakeitimo_komanda,  "%s" % variantas]):
       tray.showMessage("Pakeista", variantas+"\n\n\n", msecs=2000)
     else:
       tray.showMessage("Nepakeista", variantas+"\n\n\n", msecs=2000)
